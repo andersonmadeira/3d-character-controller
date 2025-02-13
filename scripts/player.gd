@@ -9,6 +9,8 @@ extends CharacterBody3D
 @export var body: MeshInstance3D
 @export var rotation_speed: float = 12.0
 
+# TODO: Add acceleration option to movement
+# TODO: Add deceleration option to movement
 # TODO: Implement variable jump height
 # TODO: Implement double jump (Set the number of allowed consecutive jumps)
 # TODO: Implement jump buffer
@@ -59,6 +61,8 @@ func _get_movement_speed() -> float:
 	return run_speed if _is_running else walk_speed
 
 func _update_model_rotation(delta: float) -> void:
-	# TODO: This rotation must be towards the movement direction, not exactly the camera, maybe that's why I had the Orientation node?
 	if _movement_input.length() > 0:
-		body.rotation.y = lerp_angle(body.rotation.y, camera_controller.rotation.y, rotation_speed * delta)
+		var direction_basis := Basis.looking_at(_movement_direction)
+		var q_from := body.transform.basis.get_rotation_quaternion()
+		var q_to := direction_basis.get_rotation_quaternion()
+		body.basis = Basis(q_from.slerp(q_to, delta * rotation_speed))
