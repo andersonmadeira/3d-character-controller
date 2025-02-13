@@ -9,7 +9,6 @@ extends CharacterBody3D
 @export var body: MeshInstance3D
 @export var rotation_speed: float = 12.0
 
-# TODO: Fix textures getting blurred from far camera
 # TODO: Implement variable jump height
 # TODO: Implement double jump (Set the number of allowed consecutive jumps)
 # TODO: Implement jump buffer
