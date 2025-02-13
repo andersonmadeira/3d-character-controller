@@ -1,7 +1,8 @@
-[gd_scene load_steps=12 format=3 uid="uid://b0fl4sjl74o54"]
+[gd_scene load_steps=20 format=3 uid="uid://b0fl4sjl74o54"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_1775d"]
 [ext_resource type="Texture2D" uid="uid://cptbdwk08rjaj" path="res://textures/Dark/texture_01.png" id="2_3w0lp"]
+[ext_resource type="Script" path="res://scripts/camera_controller.gd" id="3_27v60"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_nfsob"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -21,6 +22,14 @@ glow_enabled = true
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1djy3"]
 albedo_color = Color(1, 0.354497, 0.1926, 1)
 
+[sub_resource type="CylinderMesh" id="CylinderMesh_1y8c7"]
+top_radius = 0.465
+bottom_radius = 0.235
+height = 0.89
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lpmal"]
+albedo_color = Color(0.948303, 0.485919, 0.365688, 1)
+
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_sv6ik"]
 
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_2fy0a"]
@@ -32,6 +41,50 @@ size = Vector2(100, 100)
 albedo_texture = ExtResource("2_3w0lp")
 uv1_scale = Vector3(50, 50, 50)
 
+[sub_resource type="BoxMesh" id="BoxMesh_8wav0"]
+size = Vector3(5, 0.5, 5)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_r722l"]
+points = PackedVector3Array(-2.5, -0.25, -2.5, -2.5, 0.25, -2.5, 2.5, -0.25, -2.5, -2.5, -0.25, 2.5, -2.5, 0.25, 2.5, 2.5, 0.25, -2.5, 2.5, -0.25, 2.5, 2.5, 0.25, 2.5)
+
+[sub_resource type="Animation" id="Animation_nahy2"]
+resource_name = "move"
+length = 5.0
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 12, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_2s8ki"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_6jpwc"]
+_data = {
+"RESET": SubResource("Animation_2s8ki"),
+"move": SubResource("Animation_nahy2")
+}
+
 [node name="Playground" type="Node3D"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -41,13 +94,24 @@ environment = SubResource("Environment_tuvdx")
 transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
 shadow_enabled = true
 
-[node name="Player" type="CharacterBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+[node name="Player" type="CharacterBody3D" parent="." node_paths=PackedStringArray("camera_controller", "body")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, -5)
 script = ExtResource("1_1775d")
+walk_speed = 8.0
+gravity_multiplier = 4.5
+jump_velocity = 12.0
+camera_controller = NodePath("../CameraController")
+body = NodePath("Body")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Player"]
+[node name="Body" type="MeshInstance3D" parent="Player"]
 mesh = SubResource("CapsuleMesh_o8b7p")
 surface_material_override/0 = SubResource("StandardMaterial3D_1djy3")
+
+[node name="Face" type="MeshInstance3D" parent="Player/Body"]
+transform = Transform3D(-5.73206e-15, -1.31134e-07, 1, 1, -4.37114e-08, 0, 4.37114e-08, 1, 1.31134e-07, 0, 0.429739, -0.310306)
+mesh = SubResource("CylinderMesh_1y8c7")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_lpmal")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
 shape = SubResource("CapsuleShape3D_sv6ik")
@@ -61,10 +125,30 @@ shape = SubResource("WorldBoundaryShape3D_2fy0a")
 mesh = SubResource("PlaneMesh_p5wip")
 surface_material_override/0 = SubResource("StandardMaterial3D_oxjpp")
 
-[node name="SpringArm3D" type="SpringArm3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
+[node name="CameraController" type="Node3D" parent="." node_paths=PackedStringArray("follow_target")]
+script = ExtResource("3_27v60")
+follow_target = NodePath("../Player")
+
+[node name="InnerGimbal" type="Node3D" parent="CameraController"]
+
+[node name="SpringArm3D" type="SpringArm3D" parent="CameraController/InnerGimbal"]
 collision_mask = 2
 spring_length = 8.0
 
-[node name="Camera3D" type="Camera3D" parent="SpringArm3D"]
-transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 6, 0)
+[node name="Camera3D" type="Camera3D" parent="CameraController/InnerGimbal/SpringArm3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6, 0)
+fov = 40.0
+
+[node name="AnimatableBody3D" type="AnimatableBody3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="AnimatableBody3D"]
+mesh = SubResource("BoxMesh_8wav0")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="AnimatableBody3D"]
+shape = SubResource("ConvexPolygonShape3D_r722l")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="AnimatableBody3D"]
+libraries = {
+"": SubResource("AnimationLibrary_6jpwc")
+}
+autoplay = "move"
