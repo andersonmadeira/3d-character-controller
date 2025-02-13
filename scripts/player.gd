@@ -17,7 +17,8 @@ extends CharacterBody3D
 # TODO: Procedurally generate pipes for the player to slide on https://www.youtube.com/watch?v=4nOEVPjVmjc&ab_channel=BeauSeymour
 
 var _is_running: bool = false
-var _direction: Vector3
+var _movement_input: Vector2
+var _movement_direction: Vector3
 	
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_released("run"):
@@ -48,11 +49,11 @@ func _update_movement_velocity(delta: float) -> void:
 	var velocity_y = velocity.y
 	velocity.y = 0
 	
-	var input_dir := Input.get_vector("move_left", "move_right", "move_up", "move_down")
-	_direction = Vector3(input_dir.x, 0, input_dir.y).rotated(Vector3.UP, camera_controller.rotation.y)
+	_movement_input = Input.get_vector("move_left", "move_right", "move_up", "move_down")
+	_movement_direction = Vector3(_movement_input.x, 0, _movement_input.y).rotated(Vector3.UP, camera_controller.rotation.y)
 	var speed := _get_movement_speed()
 	
-	velocity = lerp(velocity, _direction * speed, acceleration * delta)
+	velocity = lerp(velocity, _movement_direction * speed, acceleration * delta)
 	velocity.y = velocity_y
 
 func _get_movement_speed() -> float:
@@ -60,5 +61,5 @@ func _get_movement_speed() -> float:
 
 func _update_model_rotation(delta: float) -> void:
 	# TODO: This rotation must be towards the movement direction, not exactly the camera, maybe that's why I had the Orientation node?
-	if velocity.length() > 1.0:
+	if _movement_input.length() > 0:
 		body.rotation.y = lerp_angle(body.rotation.y, camera_controller.rotation.y, rotation_speed * delta)
