@@ -11,17 +11,22 @@ extends CharacterBody3D
 
 # TODO: Add acceleration option to movement
 # TODO: Add deceleration option to movement
+# TODO: After these TWO ^ add air control option to movement
+# TODO: Add option to control how long the player stays in the apex of the jump
 # TODO: Implement variable jump height
 # TODO: Implement double jump (Set the number of allowed consecutive jumps)
 # TODO: Implement jump buffer
 # TODO: Implement coyote time
+# TODO: Walk over rocks and small obstacles?
+# TODO: Wall jump?
 # TODO: Procedurally generate pipes for the player to slide on https://www.youtube.com/watch?v=4nOEVPjVmjc&ab_channel=BeauSeymour
 
 var _is_running: bool = false
 var _movement_input: Vector2
 var _movement_direction: Vector3
-	
+
 func _unhandled_input(event: InputEvent) -> void:
+	# TODO: Only start or stop running if grounded?
 	if event.is_action_released("run"):
 		_is_running = false
 	if event.is_action_pressed("run"):
@@ -45,7 +50,7 @@ func _physics_process(delta: float) -> void:
 	
 	# Update rotation
 	_update_model_rotation(delta)
-	
+
 func _update_movement_velocity(delta: float) -> void:
 	var velocity_y = velocity.y
 	velocity.y = 0
