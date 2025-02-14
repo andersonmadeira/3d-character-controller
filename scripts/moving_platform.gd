@@ -1,3 +1,4 @@
+@tool
 extends Node3D
 class_name MovingPlatform
 
@@ -5,7 +6,10 @@ class_name MovingPlatform
 
 @export var move_time: float = 5
 @export var idle_time: float = 2
-@export var destination: Vector3
+@export var destination: Vector3:
+	set(val):
+		destination = val
+		_on_destination_changed(val)
 @onready var animatable_body: AnimatableBody3D = $AnimatableBody3D
 @onready var idle_timer: Timer = $IdleTimer
 
@@ -15,10 +19,29 @@ var _origin: Vector3
 var _current_target: Vector3
 var _direction: Direction = Direction.Backward
 
+var _debug_line: MeshInstance3D
+
 func _ready() -> void:
 	_origin = global_position
 	_current_target = destination
-	_move()
+	
+	if not Engine.is_editor_hint():
+		_move()
+
+func _enter_tree() -> void:
+	if Engine.is_editor_hint():
+		_on_destination_changed(destination)
+
+func _exit_tree() -> void:
+	if Engine.is_editor_hint():
+		print('Goodbye!')
+
+func _on_destination_changed(new_destination: Vector3) -> void:
+	if Engine.is_editor_hint() and is_inside_tree():
+		if _debug_line:
+			_debug_line.queue_free()
+		
+		_debug_line = await Draw3D.line(global_position, new_destination)
 
 func _move() -> void:
 	var tween = get_tree().create_tween().bind_node(self).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
