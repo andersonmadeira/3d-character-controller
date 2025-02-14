@@ -1,8 +1,10 @@
 extends Node3D
 class_name MovingPlatform
 
-@export var speed: float = 1
-@export var idle_time: float = 1
+# TODO: In the editor, trace a line from origin to destination to help designing the level
+
+@export var move_time: float = 5
+@export var idle_time: float = 2
 @export var destination: Vector3
 @onready var animatable_body: AnimatableBody3D = $AnimatableBody3D
 @onready var idle_timer: Timer = $IdleTimer
@@ -12,35 +14,24 @@ enum Direction { Forward, Backward }
 var _origin: Vector3
 var _current_target: Vector3
 var _direction: Direction = Direction.Backward
-var _stopped: bool = true
 
 func _ready() -> void:
 	_origin = global_position
 	_current_target = destination
+	_move()
 
-func _physics_process(delta: float) -> void:
-	if _stopped:
-		return
+func _move() -> void:
+	var tween = get_tree().create_tween().bind_node(self).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
+	tween.tween_property(animatable_body, "global_position", _current_target, move_time)
+	tween.tween_callback(_finish_movement)
 
-	# FIXME: This is not going to the end, need a way to check that reached destination, using tweens?
-	animatable_body.global_position = \
-		animatable_body.global_position.lerp(_current_target, delta * speed)
-		
-	var distance = animatable_body.global_position.distance_squared_to(_current_target)
-	
-	print(distance)
-	
-	if distance < 0.1:
-		_stop()
-
-func _stop() -> void:
-	_stopped = true
+func _finish_movement() -> void:
 	idle_timer.wait_time = idle_time
 	idle_timer.start()
 
 func _on_idle_timer_timeout() -> void:
 	_switch_direction()
-	_stopped = false
+	_move()
 
 func _switch_direction() -> void:
 	if _direction == Direction.Forward:
