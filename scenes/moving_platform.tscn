@@ -22,7 +22,6 @@ script = ExtResource("1_w5d0c")
 one_shot = true
 
 [node name="Path3D" type="Path3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.858973, 0)
 curve = SubResource("Curve3D_0d0sc")
 
 [node name="PathFollow3D" type="PathFollow3D" parent="Path3D"]
