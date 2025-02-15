@@ -1,6 +1,13 @@
-[gd_scene load_steps=4 format=3 uid="uid://dto7hqhur8hfo"]
+[gd_scene load_steps=5 format=3 uid="uid://dto7hqhur8hfo"]
 
 [ext_resource type="Script" path="res://scripts/moving_platform.gd" id="1_w5d0c"]
+
+[sub_resource type="Curve3D" id="Curve3D_0d0sc"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8.15264, -6.05026),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
 
 [sub_resource type="BoxMesh" id="BoxMesh_8wav0"]
 size = Vector3(5, 0.5, 5)
@@ -11,16 +18,29 @@ points = PackedVector3Array(-2.5, -0.25, -2.5, -2.5, 0.25, -2.5, 2.5, -0.25, -2.
 [node name="MovingPlatform" type="Node3D"]
 script = ExtResource("1_w5d0c")
 
-[node name="AnimatableBody3D" type="AnimatableBody3D" parent="."]
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="AnimatableBody3D"]
-mesh = SubResource("BoxMesh_8wav0")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="AnimatableBody3D"]
-shape = SubResource("ConvexPolygonShape3D_r722l")
-
 [node name="IdleTimer" type="Timer" parent="."]
 one_shot = true
-autostart = true
+
+[node name="Path3D" type="Path3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.858973, 0)
+curve = SubResource("Curve3D_0d0sc")
+
+[node name="PathFollow3D" type="PathFollow3D" parent="Path3D"]
+transform = Transform3D(0.999965, 0, 0, 0, 0.59594, -0.802995, 0, 0.80302, 0.595921, 0, 0, 0)
+loop = false
+
+[node name="RemoteTransform3D" type="RemoteTransform3D" parent="Path3D/PathFollow3D"]
+transform = Transform3D(1.00001, 0, 0, 0, 1.00003, 0, 0, 0, 1.00003, 0, 0, 0)
+remote_path = NodePath("../../AnimatableBody3D")
+update_rotation = false
+update_scale = false
+
+[node name="AnimatableBody3D" type="AnimatableBody3D" parent="Path3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Path3D/AnimatableBody3D"]
+mesh = SubResource("BoxMesh_8wav0")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Path3D/AnimatableBody3D"]
+shape = SubResource("ConvexPolygonShape3D_r722l")
 
 [connection signal="timeout" from="IdleTimer" to="." method="_on_idle_timer_timeout"]

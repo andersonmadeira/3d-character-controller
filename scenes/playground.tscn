@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://b0fl4sjl74o54"]
+[gd_scene load_steps=21 format=3 uid="uid://b0fl4sjl74o54"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_1775d"]
 [ext_resource type="Texture2D" uid="uid://cptbdwk08rjaj" path="res://textures/Dark/texture_01.png" id="2_3w0lp"]
@@ -44,6 +44,41 @@ anisotropy = 1.0
 uv1_scale = Vector3(50, 50, 50)
 texture_filter = 5
 
+[sub_resource type="Curve3D" id="Curve3D_ti66y"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 14, -10),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="Curve3D" id="Curve3D_xjsm0"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 14, 10),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="Curve3D" id="Curve3D_ss0wb"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 11, 0),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="Curve3D" id="Curve3D_t8d3j"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -12, 0, 0),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="Curve3D" id="Curve3D_ehffs"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, 0, 0),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
 [node name="Playground" type="Node3D"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -54,13 +89,14 @@ transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75
 shadow_enabled = true
 
 [node name="Player" type="CharacterBody3D" parent="." node_paths=PackedStringArray("camera_controller", "body")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 4)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.12169, 0)
 script = ExtResource("1_1775d")
 walk_speed = 8.0
 gravity_multiplier = 4.5
 jump_velocity = 12.0
 camera_controller = NodePath("../CameraController")
 body = NodePath("Body")
+metadata/_edit_group_ = true
 
 [node name="Body" type="MeshInstance3D" parent="Player"]
 mesh = SubResource("CapsuleMesh_o8b7p")
@@ -98,21 +134,72 @@ spring_length = 8.0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6, 0)
 fov = 40.0
 
-[node name="MovingPlatform2" parent="." instance=ExtResource("4_uosqv")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24, 16, -7)
-destination = Vector3(-7, 24, -26)
-
 [node name="MovingPlatform4" parent="." instance=ExtResource("4_uosqv")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24, 10, 0)
-destination = Vector3(-4.865, 10, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 11, -7)
+
+[node name="Path3D" parent="MovingPlatform4" index="1"]
+curve = SubResource("Curve3D_ti66y")
+
+[node name="PathFollow3D" parent="MovingPlatform4/Path3D" index="0"]
+transform = Transform3D(0.999964, 0, 0, 0, 0.581233, -0.813699, 0, 0.813726, 0.581214, 0, 0, 0)
 
 [node name="MovingPlatform5" parent="." instance=ExtResource("4_uosqv")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 10, 0)
-destination = Vector3(-24, 10, -6)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 11, 7)
 
-[node name="MovingPlatform3" parent="." instance=ExtResource("4_uosqv")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24, 16, 7)
-destination = Vector3(-24, 10, 6)
+[node name="Path3D" parent="MovingPlatform5" index="1"]
+curve = SubResource("Curve3D_xjsm0")
+
+[node name="PathFollow3D" parent="MovingPlatform5/Path3D" index="0"]
+transform = Transform3D(-0.999965, -7.11384e-08, -5.08115e-08, 0, 0.581234, -0.813702, 8.74197e-08, -0.813728, -0.581216, 0, 0, 0)
+
+[node name="MovingPlatform8" parent="." instance=ExtResource("4_uosqv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24, 11, -7)
+
+[node name="Path3D" parent="MovingPlatform8" index="1"]
+curve = SubResource("Curve3D_ti66y")
+
+[node name="PathFollow3D" parent="MovingPlatform8/Path3D" index="0"]
+transform = Transform3D(0.999964, 0, 0, 0, 0.581233, -0.813699, 0, 0.813726, 0.581214, 0, 0, 0)
+
+[node name="MovingPlatform9" parent="." instance=ExtResource("4_uosqv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24, 11, 7)
+
+[node name="Path3D" parent="MovingPlatform9" index="1"]
+curve = SubResource("Curve3D_xjsm0")
+
+[node name="PathFollow3D" parent="MovingPlatform9/Path3D" index="0"]
+transform = Transform3D(-0.999965, -7.11384e-08, -5.08115e-08, 0, 0.581234, -0.813702, 8.74197e-08, -0.813728, -0.581216, 0, 0, 0)
 
 [node name="MovingPlatform6" parent="." instance=ExtResource("4_uosqv")]
-destination = Vector3(18, 10, 26)
+
+[node name="Path3D" parent="MovingPlatform6" index="1"]
+curve = SubResource("Curve3D_ss0wb")
+
+[node name="PathFollow3D" parent="MovingPlatform6/Path3D" index="0"]
+transform = Transform3D(-4.37099e-08, 0.999989, -4.37095e-08, 0, -4.37109e-08, -0.999957, -0.999965, -4.37109e-08, 1.9106e-15, 0, 0, 0)
+
+[node name="MovingPlatform7" parent="." instance=ExtResource("4_uosqv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19, 11, 0)
+
+[node name="Path3D" parent="MovingPlatform7" index="1"]
+curve = SubResource("Curve3D_t8d3j")
+
+[node name="PathFollow3D" parent="MovingPlatform7/Path3D" index="0"]
+transform = Transform3D(-4.37097e-08, 0, 0.99996, 0, 0.999991, 0, -0.999961, 0, -4.37096e-08, 0, 0, 0)
+
+[node name="MovingPlatform10" parent="." instance=ExtResource("4_uosqv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 11, 0)
+
+[node name="Path3D" parent="MovingPlatform10" index="1"]
+curve = SubResource("Curve3D_ehffs")
+
+[node name="PathFollow3D" parent="MovingPlatform10/Path3D" index="0"]
+transform = Transform3D(-4.37097e-08, 0, -0.99996, 0, 0.999991, 0, 0.999961, 0, -4.37096e-08, 0, 0, 0)
+
+[editable path="MovingPlatform4"]
+[editable path="MovingPlatform5"]
+[editable path="MovingPlatform8"]
+[editable path="MovingPlatform9"]
+[editable path="MovingPlatform6"]
+[editable path="MovingPlatform7"]
+[editable path="MovingPlatform10"]
