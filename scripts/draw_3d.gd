@@ -18,11 +18,13 @@ func line(p1: Vector3, p2: Vector3, color = Color.WHITE_SMOKE, duration_ms = 0):
 	material.albedo_color = color
 
 	return await _clean_up(mesh_instance, duration_ms)
-	
-## 0 -> Lasts ONLY for current physics frame
+
+## 0 -> unmanaged, caller have to take care of everything including adding the line to the tree
+## 1 -> Lasts ONLY for current physics frame
 ## > 1 -> Lasts X time duration.
 func _clean_up(mesh_instance: MeshInstance3D, duration_ms: float):
-	get_tree().get_root().add_child(mesh_instance)
+	if duration_ms != 0:
+		get_tree().get_root().add_child(mesh_instance)
 
 	if duration_ms == 1:
 		await get_tree().physics_frame
