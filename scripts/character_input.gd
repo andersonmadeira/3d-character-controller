@@ -4,6 +4,8 @@ class_name CharacterInput
 signal movement_input_changed(new_input: Vector2)
 signal camera_input_changed(new_input: Vector2)
 signal zoom(factor: float)
+signal jump_pressed()
+signal jump_released()
 	
 func was_jump_pressed_this_frame() -> bool:
 	return Input.is_action_just_pressed("jump")
@@ -20,3 +22,9 @@ func _unhandled_input(event: InputEvent) -> void:
 
 	if event.is_action_pressed("zoom_out"):
 		zoom.emit(1)
+		
+	if event.is_action_pressed("jump"):
+		jump_pressed.emit()
+	
+	if event.is_action_released("jump"):
+		jump_released.emit()

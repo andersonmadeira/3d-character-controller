@@ -71,8 +71,6 @@ input = NodePath("../CharacterInput")
 body = NodePath("..")
 visual = NodePath("../CharacterVisual")
 walk_speed = 8.0
-gravity_multiplier = 3.0
-apex_duration = 0.2
 
 [node name="CharacterInput" type="Node" parent="."]
 script = ExtResource("7_smehm")
