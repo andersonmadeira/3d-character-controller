@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=4 uid="uid://b0fl4sjl74o54"]
+[gd_scene load_steps=21 format=3 uid="uid://b0fl4sjl74o54"]
 
 [ext_resource type="PackedScene" uid="uid://ba5d3ju4aifem" path="res://scenes/player.tscn" id="1_ur26c"]
 [ext_resource type="Texture2D" uid="uid://cptbdwk08rjaj" path="res://textures/Dark/texture_01.png" id="2_3w0lp"]
@@ -83,20 +83,6 @@ _data = {
 "tilts": PackedFloat32Array(0, 0)
 }
 point_count = 2
-
-[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_q8s1k"]
-data = PackedVector3Array(-1.5, -0.125, 1, -1.5, -0.125, -1, -1.5, 0.125, -1, 1.5, -0.125, -1, -1.5, -0.125, -1, -1.5, -0.125, 1, -1.5, 0.125, -1, -1.5, -0.125, -1, 1.5, -0.125, -1, -1.5, 0.125, -1, -1.5, 0.125, 1, -1.5, -0.125, 1, -1.5, -0.125, 1, -1.5, 0.125, 1, 1.5, 0.125, 1, 1.5, 0.125, 1, -1.5, 0.125, 1, -1.5, 0.125, -1, -1.5, -0.125, 1, 1.5, -0.125, 1, 1.5, -0.125, -1, 1.5, 0.125, 1, 1.5, -0.125, 1, -1.5, -0.125, 1, 1.5, -0.125, -1, 1.5, -0.125, 1, 1.5, 0.125, 1, 1.5, -0.125, -1, 1.5, 0.125, -1, -1.5, 0.125, -1, -1.5, 0.125, -1, 1.5, 0.125, -1, 1.5, 0.125, 1, 1.5, 0.125, 1, 1.5, 0.125, -1, 1.5, -0.125, -1)
-
-[sub_resource type="ArrayMesh" id="ArrayMesh_mm0a5"]
-_surfaces = [{
-"aabb": AABB(-1.5, -0.125, -1, 3, 0.25, 2),
-"attribute_data": PackedByteArray("AACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/"),
-"format": 34359738391,
-"primitive": 3,
-"uv_scale": Vector4(0, 0, 0, 0),
-"vertex_count": 36,
-"vertex_data": PackedByteArray("AADAvwAAAL4AAIA/AADAvwAAAL4AAIC/AADAvwAAAD4AAIC/AADAPwAAAL4AAIC/AADAvwAAAL4AAIC/AADAvwAAAL4AAIA/AADAvwAAAD4AAIC/AADAvwAAAL4AAIC/AADAPwAAAL4AAIC/AADAvwAAAD4AAIC/AADAvwAAAD4AAIA/AADAvwAAAL4AAIA/AADAvwAAAL4AAIA/AADAvwAAAD4AAIA/AADAPwAAAD4AAIA/AADAPwAAAD4AAIA/AADAvwAAAD4AAIA/AADAvwAAAD4AAIC/AADAvwAAAL4AAIA/AADAPwAAAL4AAIA/AADAPwAAAL4AAIC/AADAPwAAAD4AAIA/AADAPwAAAL4AAIA/AADAvwAAAL4AAIA/AADAPwAAAL4AAIC/AADAPwAAAL4AAIA/AADAPwAAAD4AAIA/AADAPwAAAL4AAIC/AADAPwAAAD4AAIC/AADAvwAAAD4AAIC/AADAvwAAAD4AAIC/AADAPwAAAD4AAIC/AADAPwAAAD4AAIA/AADAPwAAAD4AAIA/AADAPwAAAD4AAIC/AADAPwAAAL4AAIC/AAD/f/9//n8AAP9//3/+fwAA/3//f/5//38AAP//AAD/fwAA//8AAP9/AAD//wAA/////wAA/z//////AAD/P/////8AAP8/AAD/f/9//n8AAP9//3/+fwAA/3//f/5//3//fwAA/z//f/9/AAD/P/9//38AAP8//3//////AAD/f/////8AAP9//////wAA/38AAP//AAD/fwAA//8AAP9/AAD//wAA/3//fwAA/z//f/9/AAD/P/9//38AAP8/////f/9//n////9//3/+f////3//f/5//////wAA/z//////AAD/P/////8AAP8//3//////AAD/f/////8AAP9//////wAA////f/9//n////9//3/+f////3//f/5/")
-}]
 
 [node name="Playground" type="Node3D"]
 
@@ -225,18 +211,13 @@ curve = SubResource("Curve3D_aiwmj")
 
 [node name="FixedPlatforms" type="Node3D" parent="."]
 
-[node name="StaticBody3D" type="StaticBody3D" parent="FixedPlatforms"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25244, 5.5)
-
-[node name="CSGBakedCollisionShape3D" type="CollisionShape3D" parent="FixedPlatforms/StaticBody3D"]
-shape = SubResource("ConcavePolygonShape3D_q8s1k")
-
-[node name="CSGBakedMeshInstance3D" type="MeshInstance3D" parent="FixedPlatforms/StaticBody3D"]
-mesh = SubResource("ArrayMesh_mm0a5")
-skeleton = NodePath("../../root/@EditorNode@21269/@Panel@14/@VBoxContainer@15/DockHSplitLeftL/DockHSplitLeftR/DockHSplitMain/@VBoxContainer@26/DockVSplitCenter/@VSplitContainer@54/@VBoxContainer@55/@EditorMainScreen@102/MainScreen/@CanvasItemEditor@11479/@VSplitContainer@11131/@HSplitContainer@11133/@HSplitContainer@11135/@Control@11136/@SubViewportContainer@11137/@SubViewport@11138/Playground/FixedPlatforms")
-
 [node name="CSGBox3D2" type="CSGBox3D" parent="FixedPlatforms"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.25244, 8.5)
+use_collision = true
+size = Vector3(3, 0.25, 2)
+
+[node name="CSGBox3D14" type="CSGBox3D" parent="FixedPlatforms"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25244, 5.5)
 use_collision = true
 size = Vector3(3, 0.25, 2)
 

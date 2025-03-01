@@ -1,7 +1,8 @@
 extends Node
-class_name AnimationManager
+class_name CharacterAnimation
 
-@export var player: Player
+@export var input: CharacterInput
+@export var movement: CharacterMovement
 @export var animation_player: AnimationPlayer
 @export var animation_data: CharacterAnimationData
 
@@ -10,13 +11,13 @@ var _movement_input: Vector2
 var _is_grounded: bool
 
 func _ready() -> void:
-	player.movement_input_changed.connect(_on_player_movement_input_changed)
-	player.grounded_state_changed.connect(_on_player_grounded_state_changed)
+	input.movement_input_changed.connect(_on_movement_input_changed)
+	movement.grounded_state_changed.connect(_on_grounded_state_changed)
 
-func _on_player_movement_input_changed(input: Vector2) -> void:
+func _on_movement_input_changed(input: Vector2) -> void:
 	_movement_input = input
 		
-func _on_player_grounded_state_changed(is_grounded: bool) -> void:
+func _on_grounded_state_changed(is_grounded: bool) -> void:
 	_is_grounded = is_grounded
 	
 func _change_animation(animation: String, blend = 0.2) -> void:

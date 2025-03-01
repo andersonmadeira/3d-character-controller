@@ -1,10 +1,12 @@
-[gd_scene load_steps=10 format=3 uid="uid://ba5d3ju4aifem"]
+[gd_scene load_steps=12 format=3 uid="uid://ba5d3ju4aifem"]
 
 [ext_resource type="Script" uid="uid://ckep4dica0ehr" path="res://scripts/player.gd" id="1_e5mgh"]
 [ext_resource type="PackedScene" uid="uid://ddfkau7vlwtjp" path="res://character/character-female-b.glb" id="2_40n7k"]
 [ext_resource type="Script" uid="uid://cap68osgbgpp8" path="res://scripts/shadow_blob_controller.gd" id="3_ivm6j"]
 [ext_resource type="Script" uid="uid://cb8o1xduduljk" path="res://scripts/animation_manager.gd" id="4_f6de5"]
 [ext_resource type="Resource" uid="uid://dui3on1g87vq4" path="res://resources/character_animations.tres" id="5_k1jc8"]
+[ext_resource type="Script" uid="uid://d26qbnvudclsp" path="res://scripts/character_movement.gd" id="6_fjrip"]
+[ext_resource type="Script" uid="uid://tj55tscby2xb" path="res://scripts/character_input.gd" id="7_smehm"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_sv6ik"]
 radius = 0.207223
@@ -21,20 +23,16 @@ fill_from = Vector2(0.5, 0.5)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_0283h"]
 
-[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("body")]
+[node name="Player" type="CharacterBody3D"]
 script = ExtResource("1_e5mgh")
-walk_speed = 8.0
-gravity_multiplier = 4.5
-jump_velocity = 12.0
-body = NodePath("Character")
 metadata/_edit_group_ = true
 
-[node name="Character" type="Node3D" parent="."]
+[node name="CharacterVisual" type="Node3D" parent="."]
 
-[node name="character-female-b2" parent="Character" instance=ExtResource("2_40n7k")]
+[node name="character-female-b2" parent="CharacterVisual" instance=ExtResource("2_40n7k")]
 transform = Transform3D(-1.5, 0, 2.26494e-07, 0, 1.5, 0, -2.26494e-07, 0, -1.5, 0, 0, 0)
 
-[node name="Skeleton3D" parent="Character/character-female-b2/character-female-b" index="0"]
+[node name="Skeleton3D" parent="CharacterVisual/character-female-b2/character-female-b" index="0"]
 bones/4/rotation = Quaternion(0, 0, -0.382683, 0.92388)
 bones/5/rotation = Quaternion(0, 0, 0.382683, 0.92388)
 
@@ -59,10 +57,23 @@ max_results = 1
 debug_shape_custom_color = Color(0.827451, 0, 1, 1)
 script = ExtResource("3_ivm6j")
 
-[node name="AnimationManager" type="Node" parent="." node_paths=PackedStringArray("player", "animation_player")]
+[node name="CharacterAnimation" type="Node" parent="." node_paths=PackedStringArray("input", "movement", "animation_player")]
 script = ExtResource("4_f6de5")
-player = NodePath("..")
-animation_player = NodePath("../Character/character-female-b2/AnimationPlayer")
+input = NodePath("../CharacterInput")
+movement = NodePath("../CharacterMovement")
+animation_player = NodePath("../CharacterVisual/character-female-b2/AnimationPlayer")
 animation_data = ExtResource("5_k1jc8")
 
-[editable path="Character/character-female-b2"]
+[node name="CharacterMovement" type="Node" parent="." node_paths=PackedStringArray("input", "body", "visual")]
+script = ExtResource("6_fjrip")
+walk_speed = 8.0
+gravity_multiplier = 3.0
+jump_velocity = 10.0
+input = NodePath("../CharacterInput")
+body = NodePath("..")
+visual = NodePath("../CharacterVisual")
+
+[node name="CharacterInput" type="Node" parent="."]
+script = ExtResource("7_smehm")
+
+[editable path="CharacterVisual/character-female-b2"]
