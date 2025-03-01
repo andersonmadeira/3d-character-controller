@@ -1,8 +1,8 @@
-[gd_scene load_steps=26 format=3 uid="uid://b0fl4sjl74o54"]
+[gd_scene load_steps=23 format=4 uid="uid://b0fl4sjl74o54"]
 
-[ext_resource type="Script" path="res://scripts/player.gd" id="1_1775d"]
+[ext_resource type="PackedScene" uid="uid://ba5d3ju4aifem" path="res://scenes/player.tscn" id="1_ur26c"]
 [ext_resource type="Texture2D" uid="uid://cptbdwk08rjaj" path="res://textures/Dark/texture_01.png" id="2_3w0lp"]
-[ext_resource type="Script" path="res://scripts/camera_controller.gd" id="3_27v60"]
+[ext_resource type="PackedScene" uid="uid://b6qucsr4sc404" path="res://scenes/camera_controller.tscn" id="3_nrslh"]
 [ext_resource type="PackedScene" uid="uid://dto7hqhur8hfo" path="res://scenes/moving_platform.tscn" id="4_uosqv"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_nfsob"]
@@ -16,22 +16,8 @@ sky_material = SubResource("ProceduralSkyMaterial_nfsob")
 background_mode = 2
 sky = SubResource("Sky_pf80j")
 tonemap_mode = 2
+ssao_enabled = true
 glow_enabled = true
-
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_o8b7p"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1djy3"]
-albedo_color = Color(1, 0.354497, 0.1926, 1)
-
-[sub_resource type="CylinderMesh" id="CylinderMesh_1y8c7"]
-top_radius = 0.465
-bottom_radius = 0.235
-height = 0.89
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lpmal"]
-albedo_color = Color(0.948303, 0.485919, 0.365688, 1)
-
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_sv6ik"]
 
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_2fy0a"]
 
@@ -98,6 +84,20 @@ _data = {
 }
 point_count = 2
 
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_q8s1k"]
+data = PackedVector3Array(-1.5, -0.125, 1, -1.5, -0.125, -1, -1.5, 0.125, -1, 1.5, -0.125, -1, -1.5, -0.125, -1, -1.5, -0.125, 1, -1.5, 0.125, -1, -1.5, -0.125, -1, 1.5, -0.125, -1, -1.5, 0.125, -1, -1.5, 0.125, 1, -1.5, -0.125, 1, -1.5, -0.125, 1, -1.5, 0.125, 1, 1.5, 0.125, 1, 1.5, 0.125, 1, -1.5, 0.125, 1, -1.5, 0.125, -1, -1.5, -0.125, 1, 1.5, -0.125, 1, 1.5, -0.125, -1, 1.5, 0.125, 1, 1.5, -0.125, 1, -1.5, -0.125, 1, 1.5, -0.125, -1, 1.5, -0.125, 1, 1.5, 0.125, 1, 1.5, -0.125, -1, 1.5, 0.125, -1, -1.5, 0.125, -1, -1.5, 0.125, -1, 1.5, 0.125, -1, 1.5, 0.125, 1, 1.5, 0.125, 1, 1.5, 0.125, -1, 1.5, -0.125, -1)
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_mm0a5"]
+_surfaces = [{
+"aabb": AABB(-1.5, -0.125, -1, 3, 0.25, 2),
+"attribute_data": PackedByteArray("AACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/"),
+"format": 34359738391,
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 36,
+"vertex_data": PackedByteArray("AADAvwAAAL4AAIA/AADAvwAAAL4AAIC/AADAvwAAAD4AAIC/AADAPwAAAL4AAIC/AADAvwAAAL4AAIC/AADAvwAAAL4AAIA/AADAvwAAAD4AAIC/AADAvwAAAL4AAIC/AADAPwAAAL4AAIC/AADAvwAAAD4AAIC/AADAvwAAAD4AAIA/AADAvwAAAL4AAIA/AADAvwAAAL4AAIA/AADAvwAAAD4AAIA/AADAPwAAAD4AAIA/AADAPwAAAD4AAIA/AADAvwAAAD4AAIA/AADAvwAAAD4AAIC/AADAvwAAAL4AAIA/AADAPwAAAL4AAIA/AADAPwAAAL4AAIC/AADAPwAAAD4AAIA/AADAPwAAAL4AAIA/AADAvwAAAL4AAIA/AADAPwAAAL4AAIC/AADAPwAAAL4AAIA/AADAPwAAAD4AAIA/AADAPwAAAL4AAIC/AADAPwAAAD4AAIC/AADAvwAAAD4AAIC/AADAvwAAAD4AAIC/AADAPwAAAD4AAIC/AADAPwAAAD4AAIA/AADAPwAAAD4AAIA/AADAPwAAAD4AAIC/AADAPwAAAL4AAIC/AAD/f/9//n8AAP9//3/+fwAA/3//f/5//38AAP//AAD/fwAA//8AAP9/AAD//wAA/////wAA/z//////AAD/P/////8AAP8/AAD/f/9//n8AAP9//3/+fwAA/3//f/5//3//fwAA/z//f/9/AAD/P/9//38AAP8//3//////AAD/f/////8AAP9//////wAA/38AAP//AAD/fwAA//8AAP9/AAD//wAA/3//fwAA/z//f/9/AAD/P/9//38AAP8/////f/9//n////9//3/+f////3//f/5//////wAA/z//////AAD/P/////8AAP8//3//////AAD/f/////8AAP9//////wAA////f/9//n////9//3/+f////3//f/5/")
+}]
+
 [node name="Playground" type="Node3D"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -107,28 +107,9 @@ environment = SubResource("Environment_tuvdx")
 transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
 shadow_enabled = true
 
-[node name="Player" type="CharacterBody3D" parent="." node_paths=PackedStringArray("camera_controller", "body")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24, 26.6078, 0)
-script = ExtResource("1_1775d")
-walk_speed = 8.0
-gravity_multiplier = 4.5
-jump_velocity = 12.0
+[node name="Player" parent="." node_paths=PackedStringArray("camera_controller") instance=ExtResource("1_ur26c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 5.5)
 camera_controller = NodePath("../CameraController")
-body = NodePath("Body")
-metadata/_edit_group_ = true
-
-[node name="Body" type="MeshInstance3D" parent="Player"]
-mesh = SubResource("CapsuleMesh_o8b7p")
-surface_material_override/0 = SubResource("StandardMaterial3D_1djy3")
-
-[node name="Face" type="MeshInstance3D" parent="Player/Body"]
-transform = Transform3D(-5.73206e-15, -1.31134e-07, 1, 1, -4.37114e-08, 0, 4.37114e-08, 1, 1.31134e-07, 0, 0.429739, -0.310306)
-mesh = SubResource("CylinderMesh_1y8c7")
-skeleton = NodePath("../..")
-surface_material_override/0 = SubResource("StandardMaterial3D_lpmal")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
-shape = SubResource("CapsuleShape3D_sv6ik")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
 
@@ -139,19 +120,8 @@ shape = SubResource("WorldBoundaryShape3D_2fy0a")
 mesh = SubResource("PlaneMesh_p5wip")
 surface_material_override/0 = SubResource("StandardMaterial3D_oxjpp")
 
-[node name="CameraController" type="Node3D" parent="." node_paths=PackedStringArray("follow_target")]
-script = ExtResource("3_27v60")
+[node name="CameraController" parent="." node_paths=PackedStringArray("follow_target") instance=ExtResource("3_nrslh")]
 follow_target = NodePath("../Player")
-
-[node name="InnerGimbal" type="Node3D" parent="CameraController"]
-
-[node name="SpringArm3D" type="SpringArm3D" parent="CameraController/InnerGimbal"]
-collision_mask = 2
-spring_length = 8.0
-
-[node name="Camera3D" type="Camera3D" parent="CameraController/InnerGimbal/SpringArm3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6, 0)
-fov = 40.0
 
 [node name="Level1" type="Node3D" parent="."]
 
@@ -176,7 +146,7 @@ metadata/_edit_group_ = true
 curve = SubResource("Curve3D_xjsm0")
 
 [node name="PathFollow3D" parent="Level1/MovingPlatforms/MovingPlatform5/Path3D" index="0"]
-transform = Transform3D(-0.999965, -7.11384e-08, -5.08115e-08, 0, 0.581234, -0.813702, 8.74197e-08, -0.813728, -0.581216, 0, 0, 0)
+transform = Transform3D(-0.999965, -7.11383e-08, -5.08115e-08, 0, 0.581234, -0.813702, 8.74197e-08, -0.813728, -0.581216, 0, 0, 0)
 
 [node name="MovingPlatform8" parent="Level1/MovingPlatforms" instance=ExtResource("4_uosqv")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24, 9, -7)
@@ -196,7 +166,7 @@ metadata/_edit_group_ = true
 curve = SubResource("Curve3D_xjsm0")
 
 [node name="PathFollow3D" parent="Level1/MovingPlatforms/MovingPlatform9/Path3D" index="0"]
-transform = Transform3D(-0.999965, -7.11384e-08, -5.08115e-08, 0, 0.581234, -0.813702, 8.74197e-08, -0.813728, -0.581216, 0, 0, 0)
+transform = Transform3D(-0.999965, -7.11383e-08, -5.08115e-08, 0, 0.581234, -0.813702, 8.74197e-08, -0.813728, -0.581216, 0, 0, 0)
 
 [node name="MovingPlatform6" parent="Level1/MovingPlatforms" instance=ExtResource("4_uosqv")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.25, 0)
@@ -244,6 +214,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21, 25, 0)
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Level1/PathWay/Step"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.31134e-07, -1.62886, 3)
 mesh = SubResource("BoxMesh_6d1r2")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Level1/PathWay/Step"]
@@ -251,6 +222,78 @@ shape = SubResource("BoxShape3D_bw7rf")
 
 [node name="Path3D" type="Path3D" parent="Level1/PathWay"]
 curve = SubResource("Curve3D_aiwmj")
+
+[node name="FixedPlatforms" type="Node3D" parent="."]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="FixedPlatforms"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25244, 5.5)
+
+[node name="CSGBakedCollisionShape3D" type="CollisionShape3D" parent="FixedPlatforms/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_q8s1k")
+
+[node name="CSGBakedMeshInstance3D" type="MeshInstance3D" parent="FixedPlatforms/StaticBody3D"]
+mesh = SubResource("ArrayMesh_mm0a5")
+skeleton = NodePath("../../root/@EditorNode@21269/@Panel@14/@VBoxContainer@15/DockHSplitLeftL/DockHSplitLeftR/DockHSplitMain/@VBoxContainer@26/DockVSplitCenter/@VSplitContainer@54/@VBoxContainer@55/@EditorMainScreen@102/MainScreen/@CanvasItemEditor@11479/@VSplitContainer@11131/@HSplitContainer@11133/@HSplitContainer@11135/@Control@11136/@SubViewportContainer@11137/@SubViewport@11138/Playground/FixedPlatforms")
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="FixedPlatforms"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.25244, 8.5)
+use_collision = true
+size = Vector3(3, 0.25, 2)
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="FixedPlatforms"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.25244, 12.5)
+use_collision = true
+size = Vector3(3, 0.25, 2)
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="FixedPlatforms"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.25244, 16.5)
+use_collision = true
+size = Vector3(3, 0.25, 2)
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="FixedPlatforms"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25244, 12.5)
+use_collision = true
+size = Vector3(3, 0.25, 2)
+
+[node name="CSGBox3D6" type="CSGBox3D" parent="FixedPlatforms"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25244, 16.5)
+use_collision = true
+size = Vector3(3, 0.25, 2)
+
+[node name="CSGBox3D7" type="CSGBox3D" parent="FixedPlatforms"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8.25244, 20.5)
+use_collision = true
+size = Vector3(3, 0.25, 2)
+
+[node name="CSGBox3D9" type="CSGBox3D" parent="FixedPlatforms"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10.2524, 23.5)
+use_collision = true
+size = Vector3(3, 0.25, 2)
+
+[node name="CSGBox3D8" type="CSGBox3D" parent="FixedPlatforms"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25244, 20.5)
+use_collision = true
+size = Vector3(3, 0.25, 2)
+
+[node name="CSGBox3D10" type="CSGBox3D" parent="FixedPlatforms"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25244, 23.5)
+use_collision = true
+size = Vector3(3, 0.25, 2)
+
+[node name="CSGBox3D11" type="CSGBox3D" parent="FixedPlatforms"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.25244, 23.5)
+use_collision = true
+size = Vector3(3, 0.25, 2)
+
+[node name="CSGBox3D12" type="CSGBox3D" parent="FixedPlatforms"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.25244, 19.5)
+use_collision = true
+size = Vector3(3, 0.25, 2)
+
+[node name="CSGBox3D13" type="CSGBox3D" parent="FixedPlatforms"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.25244, 19.5)
+use_collision = true
+size = Vector3(3, 0.25, 2)
 
 [editable path="Level1/MovingPlatforms/MovingPlatform4"]
 [editable path="Level1/MovingPlatforms/MovingPlatform5"]

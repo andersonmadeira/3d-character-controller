@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://b6qucsr4sc404"]
+
+[ext_resource type="Script" uid="uid://dvbh6l45et4wd" path="res://scripts/camera_controller.gd" id="1_beuva"]
+
+[node name="CameraController" type="Node3D"]
+script = ExtResource("1_beuva")
+
+[node name="InnerGimbal" type="Node3D" parent="."]
+
+[node name="SpringArm3D" type="SpringArm3D" parent="InnerGimbal"]
+collision_mask = 2
+spring_length = 8.0
+
+[node name="Camera3D" type="Camera3D" parent="InnerGimbal/SpringArm3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6, 0)
+fov = 40.0

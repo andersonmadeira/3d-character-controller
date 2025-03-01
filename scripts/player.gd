@@ -1,14 +1,20 @@
 extends CharacterBody3D
+class_name Player
+
+signal movement_input_changed(new_input: Vector2)
+signal grounded_state_changed(is_grounded: bool)
 
 @export var walk_speed: float = 5.0
 @export var run_speed: float= 15.0
-@export var acceleration = 4.0
+@export var acceleration = 10.0
 @export var gravity_multiplier: float = 1.0
 @export var jump_velocity: float = 4.5
 @export var camera_controller: CameraController
-@export var body: MeshInstance3D
+@export var body: Node3D
 @export var rotation_speed: float = 12.0
 
+# TODO: Add gamepad camera rotation
+# TODO: Add gamepad camera zoom
 # TODO: Add acceleration option to movement
 # TODO: Add deceleration option to movement
 # TODO: After these TWO ^ add air control option to movement
@@ -24,6 +30,7 @@ extends CharacterBody3D
 var _is_running: bool = false
 var _movement_input: Vector2
 var _movement_direction: Vector3
+var _is_grounded: bool
 
 func _unhandled_input(event: InputEvent) -> void:
 	# TODO: Only start or stop running if grounded?
@@ -33,6 +40,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		_is_running = true
 
 func _physics_process(delta: float) -> void:
+	if is_on_floor() != _is_grounded:
+		_is_grounded = is_on_floor()
+		grounded_state_changed.emit(_is_grounded)
+	
 	# Handle gravity
 	# TODO: Limit y velocity (aka gravity)
 	if not is_on_floor():
@@ -56,6 +67,9 @@ func _update_movement_velocity(delta: float) -> void:
 	velocity.y = 0
 	
 	_movement_input = Input.get_vector("move_left", "move_right", "move_up", "move_down")
+	
+	movement_input_changed.emit(_movement_input)
+	
 	_movement_direction = Vector3(_movement_input.x, 0, _movement_input.y).rotated(Vector3.UP, camera_controller.rotation.y)
 	var speed := _get_movement_speed()
 	

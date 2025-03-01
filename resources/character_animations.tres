@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="CharacterAnimationData" load_steps=2 format=3 uid="uid://dui3on1g87vq4"]
+
+[ext_resource type="Script" uid="uid://b7xq2tl7cgj0b" path="res://resources/character_animation_data.gd" id="1_r87h8"]
+
+[resource]
+script = ExtResource("1_r87h8")
+idle = "idle"
+walk = "sprint"
+run = "sprint"
+fall = "jump"

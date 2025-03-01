@@ -19,7 +19,6 @@ func _move() -> void:
 	tween.tween_callback(_finish_movement)
 
 func _finish_movement() -> void:
-	print("Moved")
 	idle_timer.wait_time = idle_time
 	idle_timer.start()
 
