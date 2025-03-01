@@ -1,6 +1,8 @@
 extends Node3D
 class_name CameraController
 
+# TODO: Add gamepad camera zoom
+
 @export var follow_target: Node3D
 @export var follow_speed: float = 4.0
 @export var zoom_speed: float = 7

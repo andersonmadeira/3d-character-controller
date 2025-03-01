@@ -18,14 +18,12 @@ func _physics_process(delta: float) -> void:
 		
 		if is_colliding() and get_collider(0).get_instance_id() != _col_id:
 			_col_id = get_collider(0).get_instance_id()
-			print(_col_id)
 			_obj_below_feet = get_collider(0)
 			_offset = _obj_below_feet.global_position.y - get_collision_point(0).y
 
 		if decal.visible:
 			var pos = Vector3(\
 			player.global_position.x, _obj_below_feet.global_position.y - _offset, player.global_position.z)
-			#print(pos)
 			decal.global_position = pos
 	else:
 		decal.visible = false

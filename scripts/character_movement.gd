@@ -12,11 +12,12 @@ signal grounded_state_changed(is_grounded: bool)
 @export var body: CharacterBody3D
 @export var visual: Node3D
 @export var rotation_speed: float = 12.0
+@export var ground_acceleration: float = 10
+@export var ground_deceleration: float = 10
+@export var air_acceleration: float = 4
+@export var air_deceleration: float = 4
 
 # TODO: Add gamepad camera rotation
-# TODO: Add gamepad camera zoom
-# TODO: Add acceleration option to movement
-# TODO: Add deceleration option to movement
 # TODO: After these TWO ^ add air control option to movement
 # TODO: Add option to control how long the player stays in the apex of the jump
 # TODO: Implement variable jump height
@@ -41,13 +42,6 @@ func set_direction(dir: Vector3) -> void:
 func _on_movement_input_changed(input: Vector2) -> void:
 	_input = input
 
-func _unhandled_input(event: InputEvent) -> void:
-	# TODO: Only start or stop running if grounded?
-	if event.is_action_released("run"):
-		_is_running = false
-	if event.is_action_pressed("run"):
-		_is_running = true
-
 func _physics_process(delta: float) -> void:
 	if body.is_on_floor() != _is_grounded:
 		_is_grounded = body.is_on_floor()
@@ -57,7 +51,7 @@ func _physics_process(delta: float) -> void:
 	if not body.is_on_floor():
 		body.velocity += body.get_gravity() * gravity_multiplier * delta
 
-	if Input.is_action_just_pressed("jump") and body.is_on_floor():
+	if input.was_jump_pressed_this_frame() and body.is_on_floor():
 		body.velocity.y = jump_velocity
 
 	_update_movement_velocity(delta)
@@ -72,8 +66,19 @@ func _update_movement_velocity(delta: float) -> void:
 	
 	var speed := _get_movement_speed()
 	
-	body.velocity = lerp(body.velocity, _direction * speed, acceleration * delta)
+	var accel := _get_movement_acceleration()
+	body.velocity = lerp(body.velocity, _direction * speed, accel * delta)
 	body.velocity.y = velocity_y
+	
+func _get_movement_acceleration() -> float:
+	var accel: float = 0
+	
+	if body.is_on_floor():
+		accel = ground_acceleration if _input != Vector2.ZERO else ground_deceleration
+	else:
+		accel = air_acceleration if _input != Vector2.ZERO else air_deceleration
+	
+	return accel
 
 func _get_movement_speed() -> float:
 	return run_speed if _is_running else walk_speed

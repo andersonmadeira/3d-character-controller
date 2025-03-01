@@ -18,7 +18,6 @@ func _spawn_items() -> void:
 		
 	var offsets = []
 	var points = curve.tessellate_even_length()
-	#print()
 	var up_vectors = curve.get_baked_up_vectors()
 	
 	for child in objects.get_children():
