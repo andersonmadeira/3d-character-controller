@@ -21,6 +21,7 @@ signal grounded_state_changed(is_grounded: bool)
 @export var fall_gravity: float = 45
 @export var jump_height: float = 2
 @export var jump_duration: float = 0.3
+@export var apex_duration: float = 1
 
 # TODO: Add option to control how long the player stays in the apex of the jump
 # TODO: Implement variable jump height
@@ -31,11 +32,14 @@ signal grounded_state_changed(is_grounded: bool)
 # TODO: Wall jump?
 # TODO: Procedurally generate pipes for the player to slide on https://www.youtube.com/watch?v=4nOEVPjVmjc&ab_channel=BeauSeymour
 
+var _is_jumping: bool = false
 var _is_running: bool = false
 var _input: Vector2
 var _direction: Vector3
-var _is_grounded: bool
+var _is_grounded: bool = false
 var _jump_gravity: float = fall_gravity
+var _apex_time: float = 0
+var _jump_requested: bool = false
 
 func _ready() -> void:
 	input.movement_input_changed.connect(_on_movement_input_changed)
@@ -47,18 +51,35 @@ func _on_movement_input_changed(input: Vector2) -> void:
 	_input = input
 
 func _physics_process(delta: float) -> void:
+	#print(_jump_requested)
+	if body.is_on_floor() and not _jump_requested:
+		_is_jumping = false
+	
+	if body.is_on_floor() and not _is_jumping:
+		_apex_time = apex_duration
+	
+	# Grounded state changed
 	if body.is_on_floor() != _is_grounded:
 		_is_grounded = body.is_on_floor()
 		grounded_state_changed.emit(_is_grounded)
+		
+		if _jump_requested:
+			_is_jumping = true
+			_jump_requested = false
 	
 	# TODO: Limit y velocity (aka gravity)
 	if not body.is_on_floor():
-		if body.velocity.y >= 0:
+		if body.velocity.y > 0:
 			body.velocity.y -= _jump_gravity * delta
 		else:
-			body.velocity.y -= fall_gravity * delta
+			if _apex_time > 0:
+				body.velocity.y = 0
+				_apex_time -= delta
+			else:
+				body.velocity.y -= fall_gravity * delta
 
 	if input.was_jump_pressed_this_frame() and body.is_on_floor():
+		_jump_requested = true
 		body.velocity.y = _get_jump_force()
 		_jump_gravity = body.velocity.y / jump_duration
 
