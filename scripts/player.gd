@@ -1,10 +1,9 @@
 extends CharacterBody3D
 class_name Player
 
-@export var camera_controller: CameraController
-
 @onready var movement: CharacterMovement = $CharacterMovement
 @onready var input: CharacterInput = $CharacterInput
+@onready var camera_controller: CameraController = $CameraController
 
 var _movement_input: Vector2
 

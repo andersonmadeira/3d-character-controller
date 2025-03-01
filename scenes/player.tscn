@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://ba5d3ju4aifem"]
+[gd_scene load_steps=13 format=3 uid="uid://ba5d3ju4aifem"]
 
 [ext_resource type="Script" uid="uid://ckep4dica0ehr" path="res://scripts/player.gd" id="1_e5mgh"]
 [ext_resource type="PackedScene" uid="uid://ddfkau7vlwtjp" path="res://character/character-female-b.glb" id="2_40n7k"]
@@ -7,6 +7,7 @@
 [ext_resource type="Resource" uid="uid://dui3on1g87vq4" path="res://resources/character_animations.tres" id="5_k1jc8"]
 [ext_resource type="Script" uid="uid://d26qbnvudclsp" path="res://scripts/character_movement.gd" id="6_fjrip"]
 [ext_resource type="Script" uid="uid://tj55tscby2xb" path="res://scripts/character_input.gd" id="7_smehm"]
+[ext_resource type="PackedScene" uid="uid://b6qucsr4sc404" path="res://scenes/camera_controller.tscn" id="8_smehm"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_sv6ik"]
 radius = 0.207223
@@ -75,5 +76,8 @@ visual = NodePath("../CharacterVisual")
 
 [node name="CharacterInput" type="Node" parent="."]
 script = ExtResource("7_smehm")
+
+[node name="CameraController" parent="." node_paths=PackedStringArray("input") instance=ExtResource("8_smehm")]
+input = NodePath("../CharacterInput")
 
 [editable path="CharacterVisual/character-female-b2"]

@@ -1,8 +1,7 @@
-[gd_scene load_steps=21 format=3 uid="uid://b0fl4sjl74o54"]
+[gd_scene load_steps=20 format=3 uid="uid://b0fl4sjl74o54"]
 
 [ext_resource type="PackedScene" uid="uid://ba5d3ju4aifem" path="res://scenes/player.tscn" id="1_ur26c"]
 [ext_resource type="Texture2D" uid="uid://cptbdwk08rjaj" path="res://textures/Dark/texture_01.png" id="2_3w0lp"]
-[ext_resource type="PackedScene" uid="uid://b6qucsr4sc404" path="res://scenes/camera_controller.tscn" id="3_nrslh"]
 [ext_resource type="PackedScene" uid="uid://dto7hqhur8hfo" path="res://scenes/moving_platform.tscn" id="4_uosqv"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_nfsob"]
@@ -93,9 +92,8 @@ environment = SubResource("Environment_tuvdx")
 transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
 shadow_enabled = true
 
-[node name="Player" parent="." node_paths=PackedStringArray("camera_controller") instance=ExtResource("1_ur26c")]
+[node name="Player" parent="." instance=ExtResource("1_ur26c")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 5.5)
-camera_controller = NodePath("../CameraController")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
 
@@ -105,9 +103,6 @@ shape = SubResource("WorldBoundaryShape3D_2fy0a")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
 mesh = SubResource("PlaneMesh_p5wip")
 surface_material_override/0 = SubResource("StandardMaterial3D_oxjpp")
-
-[node name="CameraController" parent="." node_paths=PackedStringArray("follow_target") instance=ExtResource("3_nrslh")]
-follow_target = NodePath("../Player")
 
 [node name="Level1" type="Node3D" parent="."]
 
