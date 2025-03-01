@@ -3,22 +3,25 @@ class_name CharacterMovement
 
 signal grounded_state_changed(is_grounded: bool)
 
-@export var walk_speed: float = 5.0
-@export var run_speed: float= 15.0
-@export var acceleration = 10.0
-@export var gravity_multiplier: float = 1.0
-@export var jump_velocity: float = 4.5
+@export_group("Dependencies")
 @export var input: CharacterInput
 @export var body: CharacterBody3D
 @export var visual: Node3D
+@export_group("Movement")
+@export var walk_speed: float = 5.0
+@export var run_speed: float= 15.0
+@export var gravity_multiplier: float = 1.0
 @export var rotation_speed: float = 12.0
+@export_group("Acceleration")
 @export var ground_acceleration: float = 10
 @export var ground_deceleration: float = 10
 @export var air_acceleration: float = 4
 @export var air_deceleration: float = 4
+@export_group("Jump")
+@export var fall_gravity: float = 45
+@export var jump_height: float = 2
+@export var jump_duration: float = 0.3
 
-# TODO: Add gamepad camera rotation
-# TODO: After these TWO ^ add air control option to movement
 # TODO: Add option to control how long the player stays in the apex of the jump
 # TODO: Implement variable jump height
 # TODO: Implement double jump (Set the number of allowed consecutive jumps)
@@ -32,6 +35,7 @@ var _is_running: bool = false
 var _input: Vector2
 var _direction: Vector3
 var _is_grounded: bool
+var _jump_gravity: float = fall_gravity
 
 func _ready() -> void:
 	input.movement_input_changed.connect(_on_movement_input_changed)
@@ -49,16 +53,23 @@ func _physics_process(delta: float) -> void:
 	
 	# TODO: Limit y velocity (aka gravity)
 	if not body.is_on_floor():
-		body.velocity += body.get_gravity() * gravity_multiplier * delta
+		if body.velocity.y >= 0:
+			body.velocity.y -= _jump_gravity * delta
+		else:
+			body.velocity.y -= fall_gravity * delta
 
 	if input.was_jump_pressed_this_frame() and body.is_on_floor():
-		body.velocity.y = jump_velocity
+		body.velocity.y = _get_jump_force()
+		_jump_gravity = body.velocity.y / jump_duration
 
 	_update_movement_velocity(delta)
 
 	body.move_and_slide()
 	
 	_update_model_rotation(delta)
+	
+func _get_jump_force() -> float:
+	return 2 * jump_height / jump_duration
 
 func _update_movement_velocity(delta: float) -> void:
 	var velocity_y = body.velocity.y

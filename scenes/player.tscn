@@ -67,12 +67,11 @@ animation_data = ExtResource("5_k1jc8")
 
 [node name="CharacterMovement" type="Node" parent="." node_paths=PackedStringArray("input", "body", "visual")]
 script = ExtResource("6_fjrip")
-walk_speed = 8.0
-gravity_multiplier = 3.0
-jump_velocity = 10.0
 input = NodePath("../CharacterInput")
 body = NodePath("..")
 visual = NodePath("../CharacterVisual")
+walk_speed = 8.0
+gravity_multiplier = 3.0
 
 [node name="CharacterInput" type="Node" parent="."]
 script = ExtResource("7_smehm")
