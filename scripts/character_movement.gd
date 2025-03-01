@@ -24,7 +24,7 @@ signal grounded_state_changed(is_grounded: bool)
 @export var apex_duration: float = 1
 
 # TODO: Add option to control how long the player stays in the apex of the jump
-# TODO: Implement variable jump height
+# TODO: Implement variable jump height AND should only use apex duration if player hits apex fo the jump
 # TODO: Implement double jump (Set the number of allowed consecutive jumps)
 # TODO: Implement jump buffer
 # TODO: Implement coyote time
