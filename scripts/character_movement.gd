@@ -53,22 +53,17 @@ func _physics_process(delta: float) -> void:
 		_is_grounded = body.is_on_floor()
 		grounded_state_changed.emit(_is_grounded)
 	
-	# Handle gravity
 	# TODO: Limit y velocity (aka gravity)
 	if not body.is_on_floor():
 		body.velocity += body.get_gravity() * gravity_multiplier * delta
 
-	# Handle jump.
 	if Input.is_action_just_pressed("jump") and body.is_on_floor():
 		body.velocity.y = jump_velocity
 
-	# Handle movement velocity
 	_update_movement_velocity(delta)
 
-	# Move
 	body.move_and_slide()
 	
-	# Update rotation
 	_update_model_rotation(delta)
 
 func _update_movement_velocity(delta: float) -> void:
@@ -84,7 +79,7 @@ func _get_movement_speed() -> float:
 	return run_speed if _is_running else walk_speed
 
 func _update_model_rotation(delta: float) -> void:
-	if _input.length() > 0:
+	if _input.length() > 0 and _direction != Vector3.ZERO:
 		var direction_basis := Basis.looking_at(_direction)
 		var q_from := visual.transform.basis.get_rotation_quaternion()
 		var q_to := direction_basis.get_rotation_quaternion()
