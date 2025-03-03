@@ -20,12 +20,12 @@ signal grounded_state_changed(is_grounded: bool)
 @export var air_deceleration: float = 4
 @export_group("Jump")
 @export var jump_force: float = 11
+@export var min_jump_time: float = 0.25
 @export var max_jump_height: float = 2
-@export var apex_duration: float = 0.25
+@export var apex_duration: float = 0.2
 @export var max_fall_speed: float = -20
 
-# TODO: Variable jump height, if the player just taps, the jump is too small
-#  Solution: Fix variable jump height, add config var to set how long it should wait until stopping the jump after the user released jump key
+# TODO: Differentiate jumping from falling, when falling the player is using apex and variable jump logics
 
 # TODO: Only show blob shadow when above a certain height (below that it is not needed)
 # TODO: Fix: if too close to platforms and jumps, the decal is being spawned at the top (head) of the player
@@ -54,6 +54,7 @@ var _jump_height: float = 0
 var _jump_held_overshoot: bool = false
 var _reached_apex: bool = false
 var _old_is_jumping: bool = false
+var _jump_time: float = 0
 
 func _ready() -> void:
 	input.movement_input_changed.connect(_on_movement_input_changed)
@@ -63,6 +64,7 @@ func _ready() -> void:
 func _on_jump_pressed() -> void:
 	# Only start jumping when on floor
 	if body.is_on_floor():
+		_jump_time = 0
 		_jump_hold_time = 0
 		_reached_apex = false
 		_is_jump_being_held = true
@@ -73,7 +75,10 @@ func _on_jump_released() -> void:
 	# Avoid resetting jump mid air
 	if _is_jump_being_held and body.velocity.y >= 0:
 		_is_jump_being_held = false
-		_stop_jumping()
+		
+		# If released, only stop if reached min jump time
+		if _jump_time >= min_jump_time:
+			_stop_jumping()
 	
 func set_direction(dir: Vector3) -> void:
 	_direction = dir
@@ -82,8 +87,12 @@ func _on_movement_input_changed(input: Vector2) -> void:
 	_input = input
 	
 func _process(delta: float) -> void:
-	if _is_jump_being_held:
+	if _is_jump_being_held or _jump_time <= min_jump_time:
+		_jump_time += delta
 		_jump_height = body.global_position.y - _start_jump_y_position
+		
+		if _jump_time >= min_jump_time and not _is_jump_being_held:
+			_stop_jumping()
 
 		if _jump_height >= max_jump_height:
 			_reached_apex = true
@@ -120,7 +129,7 @@ func _physics_process(delta: float) -> void:
 			if _apex_time > 0 and _reached_apex and _is_jump_being_held and _is_jumping:
 				body.velocity.y = 0
 				_apex_time -= delta
-			else:
+			elif _jump_time >= min_jump_time:
 				body.velocity += body.get_gravity() * fall_gravity_multiplier * delta
 				
 				if body.velocity.y < max_fall_speed:
