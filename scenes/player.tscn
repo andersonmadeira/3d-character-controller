@@ -71,6 +71,7 @@ input = NodePath("../CharacterInput")
 body = NodePath("..")
 visual = NodePath("../CharacterVisual")
 walk_speed = 8.0
+jump_gravity_multiplier = 3.0
 
 [node name="CharacterInput" type="Node" parent="."]
 script = ExtResource("7_smehm")

@@ -19,23 +19,25 @@ signal grounded_state_changed(is_grounded: bool)
 @export var air_acceleration: float = 4
 @export var air_deceleration: float = 4
 @export_group("Jump")
-@export var jump_force: float = 10
-@export var fall_gravity: float = 45
+@export var jump_force: float = 11
 @export var max_jump_height: float = 2
 @export var apex_duration: float = 0.25
+@export var max_fall_speed: float = -20
+
+# TODO: Variable jump height, if the player just taps, the jump is too small
+#  Solution: Fix variable jump height, add config var to set how long it should wait until stopping the jump after the user released jump key
+
+# TODO: Only show blob shadow when above a certain height (below that it is not needed)
+# TODO: Fix: if too close to platforms and jumps, the decal is being spawned at the top (head) of the player
 
 # TODO: Clean up code after variable jump height
-# TODO: Add option to control how long the player stays in the apex of the jump
-# TODO: Implement variable jump height AND should only use apex duration if player hits apex fo the jump
 # TODO: Implement double jump (Set the number of allowed consecutive jumps)
 # TODO: Implement jump buffer
 # TODO: Implement coyote time
-# TODO: Walk over rocks and small obstacles?
-# TODO: Wall jump?
-# TODO: Procedurally generate pipes for the player to slide on https://www.youtube.com/watch?v=4nOEVPjVmjc&ab_channel=BeauSeymour
-# TODO: Fix: if too close to platforms and jumps, the decal is being spawned at the top (head) of the player
 # TODO: Investigate if variable jump needs improvement, it doesn't feel 100% right
 # TODO: Stretch and squash player when jumping and landing
+
+# TODO: Procedurally generate pipes for the player to slide on https://www.youtube.com/watch?v=4nOEVPjVmjc&ab_channel=BeauSeymour
 # TODO: After this ^ if player jumps from too high it should change to "hard fall" animation and squash even more and slowly grow back to original size (mario vibes)
 
 var _is_jumping: bool = false
@@ -72,7 +74,6 @@ func _on_jump_released() -> void:
 	if _is_jump_being_held and body.velocity.y >= 0:
 		_is_jump_being_held = false
 		_stop_jumping()
-		print("Jump duration: ", _jump_hold_time)
 	
 func set_direction(dir: Vector3) -> void:
 	_direction = dir
@@ -92,7 +93,6 @@ func _stop_jumping() -> void:
 	body.velocity.y = 0
 
 func _physics_process(delta: float) -> void:
-	#print(_jump_requested)
 	if body.is_on_floor() and not _jump_requested:
 		_is_jumping = false
 	
@@ -122,11 +122,15 @@ func _physics_process(delta: float) -> void:
 				_apex_time -= delta
 			else:
 				body.velocity += body.get_gravity() * fall_gravity_multiplier * delta
+				
+				if body.velocity.y < max_fall_speed:
+					body.velocity.y = max_fall_speed
+					
+				print('Fall speed: ', body.velocity.y)
 
 	if input.was_jump_pressed_this_frame() and body.is_on_floor():
 		_jump_requested = true
 		body.velocity.y = jump_force
-		print('foo')
 
 	_update_movement_velocity(delta)
 
