@@ -22,7 +22,8 @@ gradient = SubResource("Gradient_yttam")
 fill = 1
 fill_from = Vector2(0.5, 0.5)
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_0283h"]
+[sub_resource type="SphereShape3D" id="SphereShape3D_smehm"]
+radius = 0.2
 
 [node name="Player" type="CharacterBody3D"]
 script = ExtResource("1_e5mgh")
@@ -46,13 +47,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00286436, 0)
 top_level = true
 size = Vector3(0.75, 0.2, 0.75)
 texture_albedo = SubResource("GradientTexture2D_jl18w")
-modulate = Color(0.0807833, 0.0807833, 0.0807833, 1)
+modulate = Color(0.0823529, 0.0823529, 0.0823529, 0.717647)
 normal_fade = 0.373
 distance_fade_enabled = true
 
 [node name="ShadowBlobShapeCast3D" type="ShapeCast3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-shape = SubResource("CapsuleShape3D_0283h")
+shape = SubResource("SphereShape3D_smehm")
 target_position = Vector3(0, -30, 0)
 max_results = 1
 debug_shape_custom_color = Color(0.827451, 0, 1, 1)

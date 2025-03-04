@@ -25,10 +25,7 @@ signal grounded_state_changed(is_grounded: bool)
 @export var apex_duration: float = 0.2
 @export var max_fall_speed: float = -20
 
-# TODO: Differentiate jumping from falling, when falling the player is using apex and variable jump logics
-
 # TODO: Only show blob shadow when above a certain height (below that it is not needed)
-# TODO: Fix: if too close to platforms and jumps, the decal is being spawned at the top (head) of the player
 
 # TODO: Clean up code after variable jump height
 # TODO: Implement double jump (Set the number of allowed consecutive jumps)
@@ -87,6 +84,7 @@ func _on_movement_input_changed(input: Vector2) -> void:
 	_input = input
 	
 func _process(delta: float) -> void:
+	print("Is Jumping: ", _is_jumping)
 	if _is_jump_being_held or _jump_time <= min_jump_time:
 		_jump_time += delta
 		_jump_height = body.global_position.y - _start_jump_y_position
